@@ -271,7 +271,9 @@ impl<T> SendableTexture<T> {
         if self.sender.is_same_thread() {
             println!("unregisterering in the same thread");
             let texture = self.texture.lock().unwrap();
+            println!("got texture lock");
             let texture = texture.get_ref().unwrap();
+            println!("got texture calling unregister");
             texture.platform_texture.unregister().ok_log();
         } else {
             println!("unregisterering in the different thread");

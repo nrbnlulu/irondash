@@ -78,13 +78,16 @@ impl<Type> PlatformTexture<Type> {
     }
 
     pub fn unregister(&self) -> Result<()> {
+        println!("getting engine context");
         let registry = EngineContext::get()?.get_texture_registry(self.engine_handle)?;
+        println!("unregistering texture");
         unsafe {
             (Functions::get().fl_texture_registrar_unregister_texture)(
                 registry as *mut _,
                 self.texture.get() as *mut _,
             );
         }
+        println!("texture unregistered");
         Ok(())
     }
 
