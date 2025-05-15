@@ -77,7 +77,7 @@ impl<Type> PlatformTexture<Type> {
         Ok(texture.get() as i64)
     }
 
-    fn unregister(&self) -> Result<()> {
+    pub fn unregister(&self) -> Result<()> {
         let registry = EngineContext::get()?.get_texture_registry(self.engine_handle)?;
         unsafe {
             (Functions::get().fl_texture_registrar_unregister_texture)(
@@ -131,11 +131,7 @@ impl<Type> PlatformTexture<Type> {
     }
 }
 
-impl<Type> Drop for PlatformTexture<Type> {
-    fn drop(&mut self) {
-        self.unregister().ok_log();
-    }
-}
+
 
 impl PlatformTextureWithProvider for BoxedPixelData {
     fn create_texture(
