@@ -267,11 +267,14 @@ impl<T> SendableTexture<T> {
     }
     
     pub fn unregister(self: &Arc<Self>) {
+        println!("unregisterering texture");
         if self.sender.is_same_thread() {
+            println!("unregisterering in the same thread");
             let texture = self.texture.lock().unwrap();
             let texture = texture.get_ref().unwrap();
             texture.platform_texture.unregister().ok_log();
         } else {
+            println!("unregisterering in the different thread");
             let texture_clone = self.clone();
             self.sender.send(move || {
                 let texture = texture_clone.texture.lock().unwrap();
